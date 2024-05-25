@@ -47,6 +47,7 @@ process STAR_ALIGN_IGENOMES {
         --readFilesIn $reads  \\
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
+        --outWigType wiggle \\
         $out_sam_type \\
         $ignore_gtf \\
         $seq_center \\
