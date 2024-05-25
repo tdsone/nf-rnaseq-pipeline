@@ -245,11 +245,6 @@ workflow RNASEQ {
     if (params.trimmer == 'trimgalore') {
         FASTQ_FASTQC_UMITOOLS_TRIMGALORE (
             ch_cat_fastq,
-            params.skip_fastqc || params.skip_qc,
-            params.with_umi,
-            params.skip_umi_extract,
-            params.skip_trimming,
-            params.umi_discard_read,
             params.min_trimmed_reads
         )
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.reads
@@ -258,30 +253,6 @@ workflow RNASEQ {
         ch_trim_log_multiqc    = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log
         ch_trim_read_count     = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_read_count
         ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.versions)
-    }
-
-    //
-    // SUBWORKFLOW: Read QC, extract UMI and trim adapters with fastp
-    //
-    if (params.trimmer == 'fastp') {
-        FASTQ_FASTQC_UMITOOLS_FASTP (
-            ch_cat_fastq,
-            params.skip_fastqc || params.skip_qc,
-            params.with_umi,
-            params.skip_umi_extract,
-            params.umi_discard_read,
-            params.skip_trimming,
-            [],
-            params.save_trimmed,
-            params.save_trimmed,
-            params.min_trimmed_reads
-        )
-        ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
-        ch_fastqc_raw_multiqc  = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
-        ch_fastqc_trim_multiqc = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip
-        ch_trim_log_multiqc    = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json
-        ch_trim_read_count     = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
     }
 
     //
@@ -303,22 +274,6 @@ workflow RNASEQ {
                 WorkflowRnaseq.multiqcTsvFromList(tsv_data, header)
         }
         .set { ch_fail_trimming_multiqc }
-
-    //
-    // MODULE: Remove genome contaminant reads
-    //
-    if (!params.skip_bbsplit) {
-        BBMAP_BBSPLIT (
-            ch_filtered_reads,
-            PREPARE_GENOME.out.bbsplit_index,
-            [],
-            [ [], [] ],
-            false
-        )
-        .primary_fastq
-        .set { ch_filtered_reads }
-        ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
-    }
 
     //
     // MODULE: Remove ribosomal RNA reads

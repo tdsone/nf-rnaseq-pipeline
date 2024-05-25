@@ -75,29 +75,12 @@
                     "fa_icon": "fas fa-code-branch",
                     "help_text": "This parameter is *mandatory* if `--genome` is not specified."
                 },
-                "additional_fasta": {
-                    "type": "string",
-                    "format": "file-path",
-                    "exists": true,
-                    "mimetype": "text/plain",
-                    "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
-                    "fa_icon": "far fa-file-code",
-                    "description": "FASTA file to concatenate to genome FASTA file e.g. containing spike-in sequences.",
-                    "help_text": "If provided, the sequences in this file will get concatenated to the existing genome FASTA file, a GTF file will be automatically created using the entire sequence as the gene, transcript, and exon features, and any alignment index will get created from the combined FASTA and GTF. It is recommended to save the reference with `--save_reference` to re-use the index for future runs so you do not need to create it again."
-                },
                 "star_index": {
                     "type": "string",
                     "format": "path",
                     "exists": true,
                     "fa_icon": "fas fa-bezier-curve",
                     "description": "Path to directory or tar.gz archive for pre-built STAR index."
-                },
-                "hisat2_index": {
-                    "type": "string",
-                    "format": "path",
-                    "exists": true,
-                    "fa_icon": "fas fa-bezier-curve",
-                    "description": "Path to directory or tar.gz archive for pre-built HISAT2 index."
                 },
                 "salmon_index": {
                     "type": "string",
@@ -161,23 +144,6 @@
             "fa_icon": "fas fa-cut",
             "description": "Options to adjust read trimming criteria.",
             "properties": {
-                "trimmer": {
-                    "type": "string",
-                    "default": "trimgalore",
-                    "description": "Specifies the trimming tool to use - available options are 'trimgalore' and 'fastp'.",
-                    "fa_icon": "fas fa-cut",
-                    "enum": ["trimgalore", "fastp"]
-                },
-                "extra_trimgalore_args": {
-                    "type": "string",
-                    "description": "Extra arguments to pass to Trim Galore! command in addition to defaults defined by the pipeline.",
-                    "fa_icon": "fas fa-plus"
-                },
-                "extra_fastp_args": {
-                    "type": "string",
-                    "description": "Extra arguments to pass to fastp command in addition to defaults defined by the pipeline.",
-                    "fa_icon": "fas fa-plus"
-                },
                 "min_trimmed_reads": {
                     "type": "integer",
                     "default": 10000,
