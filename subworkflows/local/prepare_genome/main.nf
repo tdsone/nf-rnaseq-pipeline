@@ -33,25 +33,15 @@ include { CAT_ADDITIONAL_FASTA                 } from '../../../modules/local/ca
 include { GTF_FILTER                           } from '../../../modules/local/gtf_filter'
 include { STAR_GENOMEGENERATE_IGENOMES         } from '../../../modules/local/star_genomegenerate_igenomes'
 
+
 workflow PREPARE_GENOME {
     take:
     fasta                //      file: /path/to/genome.fasta
     gtf                  //      file: /path/to/genome.gtf
-    gff                  //      file: /path/to/genome.gff
-    additional_fasta     //      file: /path/to/additional.fasta
-    transcript_fasta     //      file: /path/to/transcript.fasta
-    gene_bed             //      file: /path/to/gene.bed
-    splicesites          //      file: /path/to/splicesites.txt
-    bbsplit_fasta_list   //      file: /path/to/bbsplit_fasta_list.txt
     star_index           // directory: /path/to/star/index/
-    rsem_index           // directory: /path/to/rsem/index/
     salmon_index         // directory: /path/to/salmon/index/
-    kallisto_index       // directory: /path/to/kallisto/index/
-    hisat2_index         // directory: /path/to/hisat2/index/
-    bbsplit_index        // directory: /path/to/rsem/index/
     gencode              //   boolean: whether the genome is from GENCODE
     is_aws_igenome       //   boolean: whether the genome files are from AWS iGenomes
-    biotype              //    string: if additional fasta file is provided biotype value to use when appending entries to GTF file
     prepare_tool_indices //      list: tools to prepare indices for
     filter_gtf           //   boolean: whether to filter GTF file
 

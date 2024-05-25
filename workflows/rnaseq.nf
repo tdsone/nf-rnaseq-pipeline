@@ -174,26 +174,16 @@ workflow RNASEQ {
 
     //
     // SUBWORKFLOW: Uncompress and prepare reference genome files
-    //
+    //  
+
     def biotype = params.gencode ? "gene_type" : params.featurecounts_group_type
     PREPARE_GENOME (
         params.fasta,
         params.gtf,
-        params.gff,
-        params.additional_fasta,
-        params.transcript_fasta,
-        params.gene_bed,
-        params.splicesites,
-        params.bbsplit_fasta_list,
         params.star_index,
-        params.rsem_index,
         params.salmon_index,
-        params.kallisto_index,
-        params.hisat2_index,
-        params.bbsplit_index,
         params.gencode,
         is_aws_igenome,
-        biotype,
         prepareToolIndices,
         filterGtf
     )
